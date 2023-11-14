@@ -67,6 +67,15 @@ const Machine = () => {
 		});
 	};
 
+	const minPrice = machineProducts.reduce((acc, product) => {
+		if (itemNumber === 0) {
+			return [...acc, product.price];
+		} else if (product.id === itemNumber) {
+			return product.quantity > 0 ? [...acc, product.price] : [...acc, Number.MAX_SAFE_INTEGER];
+		}
+		return acc;
+	}, []);
+
 	const cardProducts = isFullArray(machineProducts) && machineProducts.map(product => (
 		<SlotItem
 			key={product.id}
@@ -93,7 +102,7 @@ const Machine = () => {
 					onClick={handleKeyboardClick}
 				/>
 				<Box>
-					<Button disabled={itemNumber === 0 || accessiblePrice < Math.min(...products.map(product => product.price))} onClick={handleBuy}>Buy</Button>
+					<Button disabled={itemNumber === 0 || accessiblePrice < Math.min(...minPrice)} onClick={handleBuy}>Buy</Button>
 					<Button disabled={itemNumber === 0 && accessiblePrice === 0} onClick={handleReset}>Reset</Button>
 				</Box>
 				<InputCoin total={data.amount} onClick={handleMoneyInput} accessiblePrice={accessiblePrice} />
