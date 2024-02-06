@@ -1,6 +1,6 @@
 import { useMemo, useState, createContext } from 'react';
 import { Machine, Total } from './containers';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme, StyledEngineProvider } from '@mui/material/styles';
 import { defaultValue } from './data';
 import './App.css';
 
@@ -15,12 +15,15 @@ function App() {
   const memoizedContextValue = useMemo(() => ({ data, setData }), [data]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CartContext.Provider value={memoizedContextValue}>
-        <Total />
-        <Machine />
-      </CartContext.Provider>
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <CartContext.Provider value={memoizedContextValue}>
+          <Total />
+          <Machine />
+        </CartContext.Provider>
+      </ThemeProvider>
+    </StyledEngineProvider>
+
   );
 }
 
